@@ -2,53 +2,6 @@ const fs = require('fs');
 const inquirer = require('inquirer');
 const generatePage = require('./src/page-template');
 
-const mockData = {
-  name: 'David',
-  github: 'H0RSESH0E',
-  confirmAbout: true,
-  about:
-    'Duis consectetur nunc nunc. Morbi finibus non sapien nec pharetra. Fusce nec dignissim orci, ac interdum ipsum. Morbi mattis justo sed commodo pellentesque. Nulla eget fringilla nulla. Integer gravida magna mi, id efficitur metus tempus et.',
-  projects: [
-    {
-      name: 'portfolio-generator',
-      description: 'A CLI application which builds an HTML interface with my git hub projects',
-      languages: [Array],
-      link: 'https://github.com/H0RSESH0E/portfolio-generator',
-      feature: true,
-      confirmAddProject: false
-    },
-    {
-      name: 'Taskinator',
-      description:
-        'Duis consectetur nunc nunc. Morbi finibus non sapien nec pharetra. Fusce nec dignissim orci, ac interdum ipsum. Morbi mattis justo sed commodo pellentesque. Nulla eget fringilla nulla. Integer gravida magna mi, id efficitur metus tempus et. Nam fringilla elit dapibus pellentesque cursus.',
-      languages: ['JavaScript', 'HTML', 'CSS'],
-      link: 'https://github.com/lernantino/taskinator',
-      feature: true,
-      confirmAddProject: true
-    },
-    {
-      name: 'Taskmaster Pro',
-      description:
-        'Duis consectetur nunc nunc. Morbi finibus non sapien nec pharetra. Fusce nec dignissim orci, ac interdum ipsum. Morbi mattis justo sed commodo pellentesque. Nulla eget fringilla nulla. Integer gravida magna mi, id efficitur metus tempus et. Nam fringilla elit dapibus pellentesque cursus.',
-      languages: ['JavaScript', 'jQuery', 'CSS', 'HTML', 'Bootstrap'],
-      link: 'https://github.com/lernantino/taskmaster-pro',
-      feature: false,
-      confirmAddProject: true
-    },
-    {
-      name: 'Robot Gladiators',
-      description:
-        'Duis consectetur nunc nunc. Morbi finibus non sapien nec pharetra. Fusce nec dignissim orci, ac interdum ipsum. Morbi mattis justo sed commodo pellentesque.',
-      languages: ['JavaScript'],
-      link: 'https://github.com/lernantino/robot-gladiators',
-      feature: false,
-      confirmAddProject: false
-    }
-  ]
-};
-
-
-
 const promptUser = () => {
   return inquirer.prompt([
     {
@@ -173,14 +126,14 @@ Add a New Project
     });
 };
 
-const pageHTML = generatePage(mockData);
+promptUser()
+  .then(promptProject)
+  .then(portfolioData => {
+    const pageHTML = generatePage(portfolioData);
 
-
-// promptUser()
-//   .then(promptProject)
-//   .then(portfolioData => {
-//     const pageHTML = generatePage(mockData);
     fs.writeFile('./index.html', pageHTML, err => {
       if (err) throw new Error(err);
+
       console.log('Page created! Check out index.html in this directory to see it!');
     });
+  });
